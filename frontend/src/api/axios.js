@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "https://faceattend-ai.onrender.com",
+  baseURL: import.meta.env.VITE_API_URL || "https://faceattend-ai.onrender.com/api",
 });
 
 // Attach the JWT to every request once the user is logged in
