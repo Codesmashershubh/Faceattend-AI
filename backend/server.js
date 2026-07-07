@@ -18,7 +18,7 @@ app.set("trust proxy", 1);
 // attendance history / student lists on Render's free-tier shared bandwidth.
 app.use(compression());
 
-app.use(cors({ origin: (process.env.CLIENT_ORIGIN || "*").split(",") }));
+app.use(cors());
 app.use(express.json());
 
 app.get("/health", (req, res) => res.json({ status: "ok", service: "faceattend-backend" }));
