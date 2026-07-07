@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+html,
+body {
+  background: #e4e4e4;
+}
+
+/* Signature pill button used across the app for primary actions */
+.btn-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border: none;
+  background: #0b0b0b;
+  color: #f4f1e8;
+  border-radius: 9999px;
+  padding: 6px 6px 6px 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+.btn-pill:hover {
+  opacity: 0.85;
+}
+.btn-pill .circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #75c5de;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+.btn-pill:hover .circle {
+  transform: translateX(3px);
+}
+
+/* Reusable dark card matching the reference studio aesthetic */
+.card-dark {
+  background: #0b0b0b;
+  color: #f4f1e8;
+  border-radius: 20px;
+}
+
+.card-light {
+  background: #ffffff;
+  border-radius: 20px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

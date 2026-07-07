@@ -1,0 +1,16 @@
+# Render deployment requirements — installed AFTER dlib-bin + face_recognition
+# by build.sh. Do not add dlib, face-recognition, or opencv-python here:
+#   - dlib / face-recognition are installed by build.sh using the precompiled
+#     dlib-bin wheel, to avoid a 1+ hour source compile that exceeds Render's
+#     free-tier build limits.
+#   - opencv-python is NOT used anywhere in this codebase (face_detector.py,
+#     encoder.py, recognizer.py, app.py all decode images with Pillow), so it's
+#     dropped here to shrink slug size and install time. Purely dead weight —
+#     removing it changes zero behavior.
+flask==3.0.3
+flask-cors==4.0.1
+numpy==1.26.4
+python-dotenv==1.0.1
+Pillow==10.4.0
+face_recognition_models==0.3.0
+gunicorn==22.0.0

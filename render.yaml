@@ -1,0 +1,48 @@
+# Render Blueprint — deploys both backend services in one step.
+#
+# Usage: Render Dashboard -> New -> Blueprint -> pick this repo. Render reads
+# this file automatically since it's named render.yaml and sits at the repo
+# root. Both services below are pinned to `plan: free`.
+#
+# After the first deploy, open each service's "Environment" tab and fill in
+# the two `sync: false` values (MONGO_URI, and the ai-engine's URL on the
+# backend service) — Render prompts for these during Blueprint creation too.
+#
+# The frontend is NOT included here: per the README it's meant for Vercel,
+# which is a better fit for a static Vite build than Render's free web-service
+# tier (no spin-down, built-in CDN).
+
+services:
+  - type: web
+    name: faceattend-ai-engine
+    runtime: python
+    plan: free
+    rootDir: ai-engine
+    # dlib compiled from source takes 1hr+ and times out Render's free build
+    # step — build.sh installs the precompiled dlib-bin wheel instead.
+    buildCommand: bash build.sh
+    # -c gunicorn_conf.py applies the free-tier-tuned worker/thread/timeout
+    # settings already checked into this repo (see gunicorn_conf.py for why).
+    startCommand: gunicorn -c gunicorn_conf.py app:app
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+
+  - type: web
+    name: faceattend-backend
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: MONGO_URI
+        sync: false # paste your MongoDB Atlas connection string here
+      - key: JWT_SECRET
+        generateValue: true # Render generates a random secret for you
+      - key: AI_SERVER_URL
+        sync: false # paste the faceattend-ai-engine service URL here (shown above after its first deploy)
+      - key: CLIENT_ORIGIN
+        sync: false # your deployed frontend URL, e.g. https://your-app.vercel.app
